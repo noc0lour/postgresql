@@ -81,7 +81,7 @@
 
 - name: Set path to postgres utilities
   set_fact:
-    "{{ item.name }}": "{% if pg_ver.stdout %}/usr/lib/postgresql/{{ pg_ver.stdout }}/bin/{{ item.value }}{% else %}{{ item.default }}{% endif %}"
+    "{{ item.name }}": "{% if 'stdout' in pg_ver %}/usr/lib/postgresql/{{ pg_ver.stdout }}/bin/{{ item.value }}{% else %}{{ item.default }}{% endif %}"
   with_items:
     - name: postgres_initdb
       value: initdb
