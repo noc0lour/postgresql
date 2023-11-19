@@ -82,7 +82,7 @@ postgres_ssl_key_file: "server.key"
 postgres_ssl_ca_file: ""
 # Changing requires restart
 postgres_ssl_crl_file: ""
-postgres_password_encryption: true
+postgres_password_encryption: "scram-sha-256"
 postgres_db_user_namespace: false
 postgres_row_security: true
 postgres_krb_server_keyfile: ""
@@ -288,7 +288,6 @@ postgres_track_io_timing: false
 postgres_track_functions: none
 # Changing requires restart
 postgres_track_activity_query_size: 1024
-postgres_stats_temp_directory: pg_stat_tmp
 postgres_log_parser_stats: false
 postgres_log_planner_stats: false
 postgres_log_executor_stats: false

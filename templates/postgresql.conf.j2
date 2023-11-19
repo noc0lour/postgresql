@@ -40,7 +40,7 @@ ssl_cert_file             = '{{ postgres_ssl_cert_file }}'
 ssl_key_file              = '{{ postgres_ssl_key_file }}'
 ssl_ca_file               = '{{ postgres_ssl_ca_file }}'
 ssl_crl_file              = '{{ postgres_ssl_crl_file }}'
-password_encryption       = {{ postgres_password_encryption | lower }}
+password_encryption       = '{{ postgres_password_encryption | lower }}'
 db_user_namespace         = {{ postgres_db_user_namespace | lower }}
 row_security              = {{ postgres_row_security | lower }}
 {% if postgres_krb_server_keyfile != "" %}
@@ -262,7 +262,6 @@ track_counts              = {{ postgres_track_counts | lower }}
 track_io_timing           = {{ postgres_track_io_timing |lower }}
 track_functions           = {{ postgres_track_functions }}
 track_activity_query_size = {{ postgres_track_activity_query_size }}
-stats_temp_directory      = '{{ postgres_stats_temp_directory }}'
 
 # - Statistics Monitoring -
 
@@ -353,7 +352,6 @@ backslash_quote             = {{ postgres_backslash_quote }}
 default_with_oids           = {{ postgres_default_with_oids | lower }}
 escape_string_warning       = {{ postgres_escape_string_warning | lower }}
 lo_compat_privileges        = {{ postgres_lo_compat_privileges | lower }}
-operator_precedence_warning = {{ postgres_operator_precedence_warning | lower }}
 quote_all_identifiers       = {{ postgres_quote_all_identifiers | lower }}
 standard_conforming_strings = {{ postgres_standard_conforming_strings | lower }}
 synchronize_seqscans        = {{ postgres_synchronize_seqscans | lower }}
