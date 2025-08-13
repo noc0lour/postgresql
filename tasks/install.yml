@@ -18,6 +18,7 @@
 - name: Get postgresql version
   shell: "dpkg-query --showformat='${Version}' --show postgresql | cut -d'+' -f1"
   changed_when: false
+  check_mode: false
   register: pg_ver
 
 - name: Delete default postgres unit
