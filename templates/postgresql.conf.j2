@@ -41,7 +41,6 @@ ssl_key_file              = '{{ postgres_ssl_key_file }}'
 ssl_ca_file               = '{{ postgres_ssl_ca_file }}'
 ssl_crl_file              = '{{ postgres_ssl_crl_file }}'
 password_encryption       = '{{ postgres_password_encryption | lower }}'
-db_user_namespace         = {{ postgres_db_user_namespace | lower }}
 row_security              = {{ postgres_row_security | lower }}
 {% if postgres_krb_server_keyfile != "" %}
 
@@ -145,7 +144,6 @@ track_commit_timestamp       = {{ postgres_track_commit_timestamp | lower }}
 # - Master Server -
 
 synchronous_standby_names    = '{{ postgres_synchronous_standby_names | join(',') }}'
-vacuum_defer_cleanup_age     = {{ postgres_vacuum_defer_cleanup_age }}
 
 # - Standby Servers -
 
