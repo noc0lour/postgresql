@@ -1,73 +1,74 @@
 ---
 - name: Create main Postgres configuration
-  template:
+  ansible.builtin.template:
     src: postgresql.conf.j2
     dest: "{{ postgres_conf_directory }}/postgresql.conf"
     owner: root
     group: "{{ postgres_group }}"
-    mode: 0640
+    mode: "0640"
 
 - name: Create host-based auth config
-  template:
+  ansible.builtin.template:
     src: pg_hba.conf.j2
     dest: "{{ postgres_conf_directory }}/pg_hba.conf"
-    mode: 0640
+    mode: "0640"
     owner: root
     group: "{{ postgres_group }}"
   notify: Reload postgresql
 
 - name: Create identity-mapping file
-  template:
+  ansible.builtin.template:
     src: pg_ident.conf.j2
     dest: "{{ postgres_conf_directory }}/pg_ident.conf"
-    mode: 0640
+    mode: "0640"
     owner: root
     group: "{{ postgres_group }}"
   notify: Reload postgresql
 
 - name: Create service file
-  template:
+  ansible.builtin.template:
     src: pg_service.conf.j2
     dest: "/etc/pg_service.conf"
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
 
 - name: Tell psql to use correct socket location
-  template:
+  ansible.builtin.template:
     src: profile.sh.j2
     dest: "{{ item }}"
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
   with_items:
     - /etc/profile.d/postgresql.sh
     - "{{ postgres_home_directory }}/.profile"
     - "{{ postgres_home_directory }}/.bashrc"
 
 - name: Stat Postgres version
-  stat:
+  ansible.builtin.stat:
     path: "{{ postgres_data_directory }}/PG_VERSION"
   register: postgres_version
 
 # Using sudo because become_user may be overridden
 - name: Initialize database
-  command: sudo -Hu {{ postgres_user }} {{ postgres_initdb }} --locale {{ postgres_locale }} -E {{ postgres_encoding }} -D {{ postgres_data_directory }}
+  ansible.builtin.command: sudo -Hu {{ postgres_user }} {{ postgres_initdb }} --locale {{ postgres_locale }} -E {{ postgres_encoding }} -D {{ postgres_data_directory
+    }}
   when: not postgres_version.stat.exists
 
 - name: Include Postgres config
-  template:
+  ansible.builtin.template:
     src: postgresql_include.conf.j2
     dest: "{{ postgres_data_directory }}/postgresql.conf"
-    mode: 0640
+    mode: "0640"
     owner: root
     group: "{{ postgres_group }}"
 
 - name: Create unit file
-  template:
+  ansible.builtin.template:
     src: postgresql.service.j2
     dest: /etc/systemd/system/postgresql.service
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
   register: unitfile
@@ -75,21 +76,21 @@
     pg_ctl_path: "/usr/lib/postgresql/{{ pg_ver.stdout }}/bin/pg_ctl"
 
 - name: Reload systemd
-  command: systemctl daemon-reload
+  ansible.builtin.command: systemctl daemon-reload
   when: unitfile.changed
 
 - name: Enable and start
-  service:
+  ansible.builtin.service:
     name: postgresql.service
     state: started
-    enabled: yes
+    enabled: true
   when: not unitfile.changed
 
 - name: Enable and restart
-  service:
+  ansible.builtin.service:
     name: postgresql.service
     state: restarted
-    enabled: yes
+    enabled: true
   when: unitfile.changed
 
 - name: Ensure users exist

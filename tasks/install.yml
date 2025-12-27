@@ -1,6 +1,6 @@
 ---
 - name: Install apt packages
-  apt:
+  ansible.builtin.apt:
     name:
       - postgresql
       - postgresql-client
@@ -10,48 +10,48 @@
   register: apt
 
 - name: Stop PostgreSQL
-  service:
+  ansible.builtin.service:
     name: postgresql.service
     state: stopped
   when: apt.changed
 
 - name: Get postgresql version
-  shell: "dpkg-query --showformat='${Version}' --show postgresql | cut -d'+' -f1"
+  ansible.builtin.shell: "dpkg-query --showformat='${Version}' --show postgresql | cut -d'+' -f1"
   changed_when: false
   check_mode: false
   register: pg_ver
 
 - name: Delete default postgres unit
-  file:
+  ansible.builtin.file:
     path: /lib/systemd/system/postgresql@.service
     state: absent
   register: del_unit
 
 - name: Stop default postgres unit
-  service:
+  ansible.builtin.service:
     name: "postgresql@{{ pg_ver.stdout }}{% if ansible_distribution == 'Debian' %}-main{% endif %}.service"
     state: stopped
     enabled: false
   when: del_unit.changed
 
 - name: Reset failed state of default postgres unit
-  shell: "systemctl reset-failed postgresql@{{ pg_ver.stdout }}{% if ansible_distribution == 'Debian' %}-main{% endif %}.service"
-  ignore_errors: yes
-  changed_when: False
+  ansible.builtin.command: "systemctl reset-failed postgresql@{{ pg_ver.stdout }}{% if ansible_distribution == 'Debian' %}-main{% endif %}.service"
+  ignore_errors: true
+  changed_when: false
   when: del_unit.changed
 
 - name: Reload systemd
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: true
   when: del_unit.changed
 
 - name: Ensure Postgres group exists
-  group:
+  ansible.builtin.group:
     name: "{{ postgres_group }}"
     system: true
 
 - name: Ensure Postgres user exists
-  user:
+  ansible.builtin.user:
     name: "{{ postgres_user }}"
     group: "{{ postgres_group }}"
     shell: /bin/false
@@ -61,18 +61,18 @@
     system: true
 
 - name: Create configuration directory
-  file:
+  ansible.builtin.file:
     path: "{{ postgres_conf_directory }}"
     state: directory
-    mode: 0750
+    mode: "0750"
     owner: root
     group: postgres
 
 - name: Create directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0700
+    mode: "0700"
     owner: "{{ postgres_user }}"
     group: "{{ postgres_group }}"
   with_items:
@@ -81,7 +81,7 @@
     - "{{ postgres_home_directory }}"
 
 - name: Set path to postgres utilities
-  set_fact:
+  ansible.builtin.set_fact:
     "{{ item.name }}": "{% if pg_ver.stdout %}/usr/lib/postgresql/{{ pg_ver.stdout }}/bin/{{ item.value }}{% else %}{{ item.default }}{% endif %}"
   with_items:
     - name: postgres_initdb

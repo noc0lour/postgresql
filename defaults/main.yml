@@ -16,17 +16,17 @@ postgres_dbs: []
 ##########
 postgres_hbas:
   - connection_type: local
-    databases: [ "all" ]
-    users: [ "all" ]
+    databases: ["all"]
+    users: ["all"]
     method: "trust"
   - connection_type: host
-    databases: [ "all" ]
-    users: [ "all" ]
+    databases: ["all"]
+    users: ["all"]
     address: "127.0.0.1/32"
     method: "trust"
   - connection_type: host
-    databases: [ "all" ]
-    users: [ "all" ]
+    databases: ["all"]
+    users: ["all"]
     address: "::1/128"
     method: "trust"
 
@@ -50,11 +50,11 @@ postgres_hbas:
 # postgresql.conf
 ##########
 # Changing requires restart
-postgres_unix_socket_group: ''
+postgres_unix_socket_group: ""
 # Changing requires restart
-postgres_unix_socket_permissions: 0777
+postgres_unix_socket_permissions: "0777"
 # Changing requires restart
-postgres_listen_addresses: [ "localhost" ]
+postgres_listen_addresses: ["localhost"]
 # Changing requires restart
 postgres_port: 5432
 # Changing requires restart
@@ -93,7 +93,6 @@ postgres_tcp_keepalives_idle: 0
 postgres_tcp_keepalives_interval: 0
 # 0 select system default
 postgres_tcp_keepalives_count: 0
-
 
 # Minimum is 128kB
 # Changing requires restart
@@ -142,13 +141,12 @@ postgres_effective_io_concurrency: 1
 # Changing requires restart
 postgres_max_worker_processes: 8
 
-
 # minimal, replica, or logical
 # Changing requires restart
 postgres_wal_level: minimal
 postgres_fsync: true
 # off, local, remote_write, remote_apply, or on
-postgres_synchronous_commit: on
+postgres_synchronous_commit: true
 # open_datasync, fdatasync, fsync, fsync_witethrough, open_sync
 postgres_wal_sync_method: fdatasync
 postgres_full_page_writes: true
@@ -174,11 +172,10 @@ postgres_checkpoint_completion_target: 0.5
 postgres_checkpoint_warning: 30s
 # off, on, or always
 # Changing requires restart
-postgres_archive_mode: off
+postgres_archive_mode: false
 postgres_archive_command: ""
 # number of seconds; 0 disables
 postgres_archive_timeout: 0
-
 
 # Changing requires restart
 postgres_max_wal_senders: 0
@@ -202,7 +199,6 @@ postgres_hot_standby_feedback: false
 # in milliseconds; 0 disables
 postgres_wal_receiver_timeout: 60s
 postgres_wal_retrieve_retry_interval: 5s
-
 
 postgres_enable_bitmapscan: true
 postgres_enable_hashagg: true
@@ -237,15 +233,14 @@ postgres_from_collapse_limit: 8
 # 1 disables collapsing of explicit JOIN clauses
 postgres_join_collapse_limit: 8
 
-
 # Combination of stderr, csvlog, syslog, eventlog
 # csvlog requires logging_collector
-postgres_log_destination: [ "stderr" ]
+postgres_log_destination: ["stderr"]
 # Changing requires restart
 postgres_logging_collector: false
 # can include strftime() escapes
 postgres_log_filename: "postgresql-%Y-%m-%d_%H%M%S.log"
-postgres_log_file_mode: 0600
+postgres_log_file_mode: "0600"
 postgres_log_truncate_on_rotation: false
 # 0 disables
 postgres_log_rotation_age: 1d
@@ -270,7 +265,7 @@ postgres_log_duration: false
 # terse, default or verbose
 postgres_log_error_verbosity: default
 postgres_log_hostname: false
-postgres_log_line_prefix: ''
+postgres_log_line_prefix: ""
 postgres_log_lock_waits: false
 # none, ddl, mod or all
 postgres_log_statement: none
@@ -293,7 +288,6 @@ postgres_log_planner_stats: false
 postgres_log_executor_stats: false
 postgres_log_statement_stats: false
 
-
 # requires track_counts
 postgres_autovacuum: true
 # -1 disables, 0 logs all actions and their durations
@@ -313,7 +307,6 @@ postgres_autovacuum_multixact_freeze_max_age: 400000000
 postgres_autovacuum_vacuum_cost_delay: 20ms
 # -1 to use vacuum_cost_limit
 postgres_autovacuum_vacuum_cost_limit: -1
-
 
 postgres_search_path: '"$user", public'
 postgres_default_tablespace: ""
@@ -354,7 +347,6 @@ postgres_dynamic_library_path: "$libdir"
 postgres_local_preload_libraries: ""
 postgres_session_preload_libraries: ""
 
-
 postgres_deadlock_timeout: 1s
 # Min 10
 # Changing requires restart
@@ -362,7 +354,6 @@ postgres_max_locks_per_transaction: 64
 # Min 10
 # Changing requires restart
 postgres_max_pred_locks_per_transaction: 64
-
 
 postgres_array_nulls: true
 postgres_backslash_quote: safe_encoding
@@ -374,7 +365,6 @@ postgres_quote_all_identifiers: false
 postgres_standard_conforming_strings: true
 postgres_synchronize_seqscans: true
 postgres_transform_null_equals: false
-
 
 postgres_exit_on_error: false
 postgres_restart_after_crash: true
